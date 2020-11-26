@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "artivatic-ui"
+    }
+  },
+  "defaultProject": "artivatic-ui",
+  "cli": {
+    "analytics": false
+  }
 }

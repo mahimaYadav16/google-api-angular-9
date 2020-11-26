@@ -3,16 +3,28 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { CountriesService } from './services/countries.service';
+import { HttpClientModule } from '@angular/common/http';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey:'AIzaSyCHDew-_6z-997XSj8x3xy29d_ijO5jx_o',
+      libraries: ['places']
+    })
   ],
-  providers: [],
+  providers: [CountriesService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
