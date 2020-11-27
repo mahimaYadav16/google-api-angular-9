@@ -1,5 +1,7 @@
 import { MapsAPILoader } from '@agm/core';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { GooglePlaceDirective } from 'ngx-google-places-autocomplete';
+import { Address } from 'ngx-google-places-autocomplete/objects/address';
 import { CountriesService } from '../services/countries.service';
 
 @Component({
@@ -10,23 +12,35 @@ import { CountriesService } from '../services/countries.service';
 export class DashboardComponent implements OnInit {
   stateInfo: any[] = [];
   cityInfo: any[] = [];
-  zoom = 13;
-   latitude: number = 51.678418;
-   longitude: number = 7.809007;
+  zoom = 15;
+  public latitude: number;
+  public longitude: number;
+@ViewChild("placesRef") placesRef : GooglePlaceDirective;
+options = {
+  types : [],
+  componentRestrictions: { country: 'IN'}
+}
 
   constructor(private country:CountriesService, private mapsAPILoader: MapsAPILoader) { }
 
   ngOnInit(): void {
     this.getStates();
-    // this.loadGoogle();
+    this.loadGoogle();
   }
-  // loadGoogle() {
-  //   this.mapsAPILoader.load().then(() => {
-  //     this.placeService = new google.maps.places.AutocompleteService();
-  //     this.placeServiceIsReady = true;
-  //   });
-  // }
 
+  loadGoogle() {
+      if ('geolocation' in navigator) {
+        navigator.geolocation.getCurrentPosition((position) => {
+          this.latitude = position.coords.latitude;
+          this.longitude = position.coords.longitude;
+          this.zoom = 15;
+        });
+      }
+  }
+public handleAddressChange(address: Address) {
+  this.latitude = address.geometry.location.lat();
+  this.longitude = address.geometry.location.lng();
+}
   getStates(){
     this.country.allStates().
     subscribe(
